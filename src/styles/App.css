@@ -4,9 +4,7 @@
     grid-template-columns: repeat(3, 1fr); 
     grid-template-rows: repeat(3, 1fr); 
     gap: 8px; 
-    width:250px;
-    align-content: center;
-    margin-left:50px;  
+    margin-left:20px;
     
   }
 
@@ -26,9 +24,20 @@
     
   }
 
-  .grid-item :hover{
-    background-color: yellow; 
+.displayBox{
+    width:200px;
+}  
 
-  }
+.power-switcher{
+    width:55px;
+    height:23px;
+    background-color: black;
+} 
 
 
+
+.display{
+    width:200px;
+    height:50px;
+    background-color: grey;
+}
