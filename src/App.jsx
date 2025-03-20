@@ -1,7 +1,8 @@
 /* eslint-disable */
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import "./styles/App.css"
 import "./styles/colors.css"
 import "./styles/sizes.css"
@@ -33,7 +34,7 @@ function DrumMachine(){
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <button className="drum-pad">Q</button>
+          <Drumpad />
           <button className="drum-pad">W</button>
           <button className="drum-pad">E</button>
           <button className="drum-pad">A</button>
@@ -90,7 +91,7 @@ function Display(){
 function Volume(){
   
   return (
-    <input type="range" class="form-range" id="customRange" min="0" max="100" step="1" />
+    <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" />
   )
 }
 
@@ -108,6 +109,29 @@ function Bank(){
     </div>
     
   
+  )
+}
+
+
+function Drumpad(){
+  
+  const audioRef = useRef(null);
+
+  const playSound = () => {
+    
+   
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0; 
+      audioRef.current.play();
+    }
+  };
+
+
+  return (
+    <>
+    <button className="drum-pad" onClick={playSound}>Q</button>
+    <audio ref={audioRef} id="audio-A" src="https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3"></audio>
+    </>
   )
 }
 
