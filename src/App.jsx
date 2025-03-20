@@ -13,7 +13,7 @@ import "./styles/fonts.css"
 
 function App() {
   const [heaterKit, setHeaterKit] = useState(true)  
-  
+  const [displayContent, setDisplayContent] = useState("Heater Kit")
   
   const sounds1 = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
@@ -46,8 +46,8 @@ function App() {
     <div className="p-1px bg-secondary vh-100 align-content-center">
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine heaterKit = {heaterKit} sounds={sounds} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} />
+        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} />
       </div>
       
     </div>
@@ -55,23 +55,24 @@ function App() {
 }
 
 
-function DrumMachine({heaterKit, sounds}){
+function DrumMachine({heaterKit, sounds, setContent}){
 
   const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds.sounds1;
   const { chord1, chord2, chord3, shaker, punchyKick, sideStick, snare } = sounds.sounds2;
-
+  const namesOfSounds1 = Object.keys(sounds.sounds1)
+  const namesOfSounds2 = Object.keys(sounds.sounds2)
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" />
-          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" />
-          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" />
-          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" />
-          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" />
-          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" />
-          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" />
-          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" />
-          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" />
+          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0]  }/>
+          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]} />
+          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]}/>
+          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]}/>
+          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]}/>
+          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]} />
+          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]} />
+          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]} />
+          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]} />
           
         </div>
   )
@@ -79,14 +80,14 @@ function DrumMachine({heaterKit, sounds}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit}){
+function DisplayBox({heaterKit, setHeaterKit, content}){
 
 
   return(
 
     <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
           <Power />
-          <Display />
+          <Display content ={content} />
           <Volume />
           <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} />
           
@@ -108,11 +109,11 @@ function Power(){
   )
 }
 
-function Display(){
+function Display({content}){
 
   return(
     <div className="display">
-
+          {content}
           </div>
   )
 
@@ -150,13 +151,13 @@ function Bank({heaterKit, setHeaterKit}){
 }
 
 
-function Drumpad({sound,letter}){
-  debugger;
+function Drumpad({sound,letter, setContent, name}){
+  
   const audioRef = useRef(null);
 
   const playSound = () => {
     
-   
+     setContent(name)
     if (audioRef.current) {
       audioRef.current.currentTime = 0; 
       audioRef.current.play();
