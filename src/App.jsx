@@ -30,7 +30,7 @@ function App() {
           <button className="drum-pad">C</button>
         </div>
 
-        <div id="displayBox" className="displayBox d-flex gap-4 flex-column align-items-center">
+        <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
           <div className="power">
           <p className="text-center fw-black fs-6 mb-0">Power</p>
           <div className="power-switcher">
@@ -42,7 +42,7 @@ function App() {
           <div className="display">
 
           </div>
-          <div className="volume"></div>
+          <input type="range" class="form-range" id="customRange" min="0" max="100" step="1" />
           <div className="bank"></div>
           
         </div>
