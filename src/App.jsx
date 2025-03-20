@@ -13,7 +13,9 @@ import "./styles/fonts.css"
 
 function App() {
   const [heaterKit, setHeaterKit] = useState(true)  
-  const sounds = {
+  
+  
+  const sounds1 = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
     heater2: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-2.mp3",
     heater3: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-3.mp3",
@@ -24,12 +26,27 @@ function App() {
     kick: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/RP4_KICK_1.mp3",
     closedHH: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Cev_H2.mp3"
   }
+
+  const sounds2 = {
+    chord1:"https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3",
+    chord2:"https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3",
+    chord3:"https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3",
+    shaker:"https://s3.amazonaws.com/freecodecamp/drums/Give_us_a_light.mp3",
+    openHH:"https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3",
+    closedHH:"https://s3.amazonaws.com/freecodecamp/drums/Bld_H1.mp3",
+    punchyKick:"https://s3.amazonaws.com/freecodecamp/drums/punchy_kick_1.mp3",
+    sideStick:"https://s3.amazonaws.com/freecodecamp/drums/side_stick_1.mp3",
+    snare:"https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3"
+
+  }
+
+  const sounds ={sounds1, sounds2}
   
   return (
     <div className="p-1px bg-secondary vh-100 align-content-center">
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine sounds={sounds} />
+        <DrumMachine heaterKit = {heaterKit} sounds={sounds} />
         <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} />
       </div>
       
@@ -38,23 +55,23 @@ function App() {
 }
 
 
-function DrumMachine({sounds}){
+function DrumMachine({heaterKit, sounds}){
 
-  const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds;
-
+  const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds.sounds1;
+  const { chord1, chord2, chord3, shaker, punchyKick, sideStick, snare } = sounds.sounds2;
 
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <Drumpad sound = {heater1} letter = "Q" />
-          <Drumpad sound = {heater2} letter = "W" />
-          <Drumpad sound = {heater3} letter = "E" />
-          <Drumpad sound = {heater4} letter = "A" />
-          <Drumpad sound = {clap} letter = "S" />
-          <Drumpad sound = {openHH} letter = "D" />
-          <Drumpad sound = {kicknHat} letter = "Z" />
-          <Drumpad sound = {kick} letter = "X" />
-          <Drumpad sound = {closedHH} letter = "C" />
+          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" />
+          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" />
+          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" />
+          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" />
+          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" />
+          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" />
+          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" />
+          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" />
+          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" />
           
         </div>
   )
@@ -110,6 +127,9 @@ function Volume(){
 
 
 function Bank({heaterKit, setHeaterKit}){
+   
+  debugger;
+
   function toggleHeaterKit(){
     setHeaterKit(!heaterKit)
   }
@@ -131,7 +151,7 @@ function Bank({heaterKit, setHeaterKit}){
 
 
 function Drumpad({sound,letter}){
-  
+  debugger;
   const audioRef = useRef(null);
 
   const playSound = () => {
