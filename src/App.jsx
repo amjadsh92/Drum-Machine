@@ -12,7 +12,7 @@ import "./styles/fonts.css"
 
 
 function App() {
-  
+  const [heaterKit, setHeaterKit] = useState(true)  
   const sounds = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
     heater2: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-2.mp3",
@@ -30,7 +30,7 @@ function App() {
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
         <DrumMachine sounds={sounds} />
-        <DisplayBox />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} />
       </div>
       
     </div>
@@ -62,7 +62,7 @@ function DrumMachine({sounds}){
 }
 
 
-function DisplayBox(){
+function DisplayBox({heaterKit, setHeaterKit}){
 
 
   return(
@@ -71,7 +71,7 @@ function DisplayBox(){
           <Power />
           <Display />
           <Volume />
-          <Bank />
+          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} />
           
         </div>
   )
@@ -109,14 +109,18 @@ function Volume(){
 }
 
 
-function Bank(){
+function Bank({heaterKit, setHeaterKit}){
+  function toggleHeaterKit(){
+    setHeaterKit(!heaterKit)
+  }
+
   return(
 
     <div className="bank">
 
     <p className="text-center fw-black fs-6 mb-0">Bank</p>
     <div className="bank-switcher">
-      <button className="float-start cursor-pointer w-45 h-100 bg-primary"></button>
+      <button className={` ${heaterKit ? "float-start" : "float-end"} cursor-pointer w-45 h-100 bg-primary`} onClick={toggleHeaterKit}></button>
     </div>
 
     </div>
