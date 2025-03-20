@@ -43,7 +43,14 @@ function App() {
 
           </div>
           <input type="range" class="form-range" id="customRange" min="0" max="100" step="1" />
-          <div className="bank"></div>
+          <div className="bank">
+
+          <p className="text-center fw-black fs-6 mb-0">Bank</p>
+          <div className="bank-switcher">
+            <button className="float-start cursor-pointer w-45 h-100 bg-primary"></button>
+          </div>
+
+          </div>
           
         </div>
 

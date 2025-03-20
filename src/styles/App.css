@@ -27,7 +27,7 @@
     width:200px;
 }  
 
-.power-switcher{
+.power-switcher, .bank-switcher{
     width:55px;
     height:23px;
     background-color: black;
@@ -75,7 +75,7 @@
 }
 
 
-/* Remove hover effects */
+
 .form-range::-webkit-slider-thumb:hover {
     background: #007bff;
     transform: none !important;
@@ -91,7 +91,7 @@
 .form-range:focus-visible::-webkit-slider-thumb {
     background: #007bff;
     transform: none !important;
-    scale: 1 !important; /* Prevent scaling */
+    scale: 1 !important; 
     box-shadow: none !important;
     outline: none !important;
 }
