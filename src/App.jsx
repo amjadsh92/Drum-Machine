@@ -47,7 +47,7 @@ function App() {
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
         <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} />
       </div>
       
     </div>
@@ -80,7 +80,7 @@ function DrumMachine({heaterKit, sounds, setContent}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit, content}){
+function DisplayBox({heaterKit, setHeaterKit, content, setContent}){
 
 
   return(
@@ -89,7 +89,7 @@ function DisplayBox({heaterKit, setHeaterKit, content}){
           <Power />
           <Display content ={content} />
           <Volume />
-          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} />
+          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} content={content} setContent={setContent}/>
           
         </div>
   )
@@ -112,7 +112,7 @@ function Power(){
 function Display({content}){
 
   return(
-    <div className="display">
+    <div className="display text-center align-content-center fw-black">
           {content}
           </div>
   )
@@ -127,12 +127,13 @@ function Volume(){
 }
 
 
-function Bank({heaterKit, setHeaterKit}){
+function Bank({heaterKit, setHeaterKit, content, setContent}){
    
-  debugger;
+  
 
   function toggleHeaterKit(){
     setHeaterKit(!heaterKit)
+    setContent(heaterKit ?  "Smooth Piano Kit": "Heater Kit")
   }
 
   return(
