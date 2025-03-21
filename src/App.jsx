@@ -14,7 +14,8 @@ import "./styles/fonts.css"
 function App() {
   const [heaterKit, setHeaterKit] = useState(true)  
   const [displayContent, setDisplayContent] = useState("Heater Kit")
-  
+  const [volume, setVolume] = useState(50)
+
   const sounds1 = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
     heater2: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-2.mp3",
@@ -46,8 +47,8 @@ function App() {
     <div className="p-1px bg-secondary vh-100 align-content-center">
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} />
+        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} volume = {volume} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} setVolume={setVolume} />
       </div>
       
     </div>
@@ -55,7 +56,7 @@ function App() {
 }
 
 
-function DrumMachine({heaterKit, sounds, setContent}){
+function DrumMachine({heaterKit, sounds, setContent, volume}){
 
   const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds.sounds1;
   const { chord1, chord2, chord3, shaker, punchyKick, sideStick, snare } = sounds.sounds2;
@@ -64,15 +65,15 @@ function DrumMachine({heaterKit, sounds, setContent}){
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0]  }/>
-          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]} />
-          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]}/>
-          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]}/>
-          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]}/>
-          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]} />
-          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]} />
-          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]} />
-          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]} />
+          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0]  } volume={volume} />
+          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]} volume={volume} />
+          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]} volume={volume}/>
+          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]} volume={volume} />
+          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]} volume={volume} />
+          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]} volume={volume} />
+          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]} volume={volume} />
+          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]} volume={volume} />
+          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]} volume={volume} />
           
         </div>
   )
@@ -80,7 +81,7 @@ function DrumMachine({heaterKit, sounds, setContent}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit, content, setContent}){
+function DisplayBox({heaterKit, setHeaterKit, content, setContent, setVolume}){
 
 
   return(
@@ -88,8 +89,8 @@ function DisplayBox({heaterKit, setHeaterKit, content, setContent}){
     <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
           <Power />
           <Display content ={content} />
-          <Volume />
-          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} content={content} setContent={setContent}/>
+          <Volume  setVolume = {setVolume} />
+          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} setContent={setContent}/>
           
         </div>
   )
@@ -119,15 +120,21 @@ function Display({content}){
 
 }
 
-function Volume(){
+function Volume({setVolume}){
+
+  function adjustVolume(e){
+
+    setVolume(Number(e.target.value))
+
+  }
   
   return (
-    <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" />
+    <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" onChange={()=> adjustVolume(event)} />
   )
 }
 
 
-function Bank({heaterKit, setHeaterKit, content, setContent}){
+function Bank({heaterKit, setHeaterKit, setContent}){
    
   
 
@@ -152,14 +159,15 @@ function Bank({heaterKit, setHeaterKit, content, setContent}){
 }
 
 
-function Drumpad({sound,letter, setContent, name}){
+function Drumpad({sound,letter, setContent, name, volume}){
   
   const audioRef = useRef(null);
 
   const playSound = () => {
-    
+      debugger;
      setContent(name)
     if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
       audioRef.current.currentTime = 0; 
       audioRef.current.play();
     }
