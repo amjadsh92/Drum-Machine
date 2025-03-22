@@ -14,7 +14,14 @@ import "./styles/fonts.css"
 function App() {
   const [heaterKit, setHeaterKit] = useState(true)  
   const [displayContent, setDisplayContent] = useState("Heater Kit")
+  const [contentVersion, setContentVersion] = useState(0)
   const [volume, setVolume] = useState(50)
+
+
+  const changeContent =(value) => {
+        setDisplayContent(value)
+        setContentVersion((prev) => prev + 1)
+  }
 
   const sounds1 = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
@@ -47,8 +54,8 @@ function App() {
     <div className="p-1px bg-secondary vh-100 align-content-center">
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} volume = {volume} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} setVolume={setVolume} volume = {volume} />
+        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {changeContent} volume = {volume} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} contentVersion = {contentVersion} content={displayContent} setContent={changeContent} setVolume={setVolume} volume = {volume} />
       </div>
       
     </div>
@@ -81,17 +88,17 @@ function DrumMachine({heaterKit, sounds, setContent, volume}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit, content, setContent, volume , setVolume}){
+function DisplayBox({heaterKit, setHeaterKit, content,  setContent, contentVersion, volume , setVolume}){
   
   const [volumeChanged, setVolumeChanged] = useState(false)
-
+  
   const timeoutRef = useRef(null);
 
   return(
 
     <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
           <Power />
-          <Display content ={content} volumeChanged= {volumeChanged} volume ={volume}/>
+          <Display content ={content} setContent= {setContent} contentVersion = {contentVersion} setVolumeChanged = {setVolumeChanged} volumeChanged= {volumeChanged} volume ={volume}/>
           <Volume  volume ={volume} setVolume = {setVolume} setVolumeChanged = {setVolumeChanged} timeoutRef= {timeoutRef} content = {content}  />
           <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} setContent={setContent}/>
           
@@ -113,19 +120,44 @@ function Power(){
   )
 }
 
-function Display({content, volume, volumeChanged}){
+function Display({content, contentVersion,  volume, volumeChanged, setVolumeChanged}){
+  
+  
+ const timeoutRef = useRef(null)
+
+
+ 
+  useEffect(() => {
+      
+    clearTimeout(timeoutRef.current);
+    setVolumeChanged(false);
+
+
+  }, [contentVersion]); 
 
   
+    
+     if(volumeChanged){
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+  
+      timeoutRef.current = setTimeout(() => {
+        setVolumeChanged(false);
+      }, 2000);
+    
+    }
+
 
   return(
     <div className={"display text-center align-content-center fw-black"}>
-          {volumeChanged ? `volume: ${volume}%` : content }
+          {volumeChanged ? `volume = ${volume}%` : content }
           </div>
   )
 
 }
 
-function Volume({setVolume, setVolumeChanged, timeoutRef, content}){
+function Volume({setVolume, setVolumeChanged}){
 
   
 
@@ -136,26 +168,11 @@ function Volume({setVolume, setVolumeChanged, timeoutRef, content}){
     
 
 
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      
-      setVolumeChanged(false);
-    }, 2000);
+    
 
   }
 
-   // Stop the timeout when `content` changes
-   useEffect(() => {
-    
-      clearTimeout(timeoutRef.current);
-      setVolumeChanged(false);
-    
-    
-  }, [content]); // Runs whenever `content` updates
-
+   
   
   return (
     <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" onChange={()=> adjustVolume(event)} />
