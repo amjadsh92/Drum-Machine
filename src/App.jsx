@@ -48,7 +48,7 @@ function App() {
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
         <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {setDisplayContent} volume = {volume} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} setVolume={setVolume} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} content={displayContent} setContent={setDisplayContent} setVolume={setVolume} volume = {volume} />
       </div>
       
     </div>
@@ -81,15 +81,18 @@ function DrumMachine({heaterKit, sounds, setContent, volume}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit, content, setContent, setVolume}){
+function DisplayBox({heaterKit, setHeaterKit, content, setContent, volume , setVolume}){
+  
+  const [volumeChanged, setVolumeChanged] = useState(false)
 
+  const timeoutRef = useRef(null);
 
   return(
 
     <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
           <Power />
-          <Display content ={content} />
-          <Volume  setVolume = {setVolume} />
+          <Display content ={content} volumeChanged= {volumeChanged} volume ={volume}/>
+          <Volume  volume ={volume} setVolume = {setVolume} setVolumeChanged = {setVolumeChanged} timeoutRef= {timeoutRef} content = {content}  />
           <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} setContent={setContent}/>
           
         </div>
@@ -110,23 +113,49 @@ function Power(){
   )
 }
 
-function Display({content}){
+function Display({content, volume, volumeChanged}){
+
+  
 
   return(
-    <div className="display text-center align-content-center fw-black">
-          {content}
+    <div className={"display text-center align-content-center fw-black"}>
+          {volumeChanged ? `volume: ${volume}%` : content }
           </div>
   )
 
 }
 
-function Volume({setVolume}){
+function Volume({setVolume, setVolumeChanged, timeoutRef, content}){
+
+  
 
   function adjustVolume(e){
 
     setVolume(Number(e.target.value))
+    setVolumeChanged(true)
+    
+
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      
+      setVolumeChanged(false);
+    }, 2000);
 
   }
+
+   // Stop the timeout when `content` changes
+   useEffect(() => {
+    
+      clearTimeout(timeoutRef.current);
+      setVolumeChanged(false);
+    
+    
+  }, [content]); // Runs whenever `content` updates
+
   
   return (
     <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" onChange={()=> adjustVolume(event)} />
@@ -164,7 +193,7 @@ function Drumpad({sound,letter, setContent, name, volume}){
   const audioRef = useRef(null);
 
   const playSound = () => {
-      debugger;
+      
      setContent(name)
     if (audioRef.current) {
       audioRef.current.volume = volume / 100;
