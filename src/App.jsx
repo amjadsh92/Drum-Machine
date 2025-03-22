@@ -16,6 +16,7 @@ function App() {
   const [displayContent, setDisplayContent] = useState("Heater Kit")
   const [contentVersion, setContentVersion] = useState(0)
   const [volume, setVolume] = useState(50)
+  const [powerOn, setPowerOn] = useState(true)
 
 
   const changeContent =(value) => {
@@ -54,8 +55,8 @@ function App() {
     <div className="p-1px bg-secondary vh-100 align-content-center">
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine heaterKit = {heaterKit} sounds={sounds} setContent = {changeContent} volume = {volume} />
-        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} contentVersion = {contentVersion} content={displayContent} setContent={changeContent} setVolume={setVolume} volume = {volume} />
+        <DrumMachine powerOn = {powerOn} heaterKit = {heaterKit} sounds={sounds} setContent = {changeContent} volume = {volume} />
+        <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} powerOn = {powerOn} setPowerOn = {setPowerOn} contentVersion = {contentVersion} content={displayContent} setContent={changeContent} setVolume={setVolume} volume = {volume} />
       </div>
       
     </div>
@@ -63,7 +64,7 @@ function App() {
 }
 
 
-function DrumMachine({heaterKit, sounds, setContent, volume}){
+function DrumMachine({heaterKit, sounds, setContent, volume, powerOn}){
 
   const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds.sounds1;
   const { chord1, chord2, chord3, shaker, punchyKick, sideStick, snare } = sounds.sounds2;
@@ -72,15 +73,15 @@ function DrumMachine({heaterKit, sounds, setContent, volume}){
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0]  } volume={volume} />
-          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]} volume={volume} />
-          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]} volume={volume}/>
-          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]} volume={volume} />
-          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]} volume={volume} />
-          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]} volume={volume} />
-          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]} volume={volume} />
-          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]} volume={volume} />
-          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]} volume={volume} />
+          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0] }  powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]}   powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]}   powerOn ={powerOn} volume={volume}/>
+          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]}   powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]}   powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]}  powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]}  powerOn ={powerOn}  volume={volume} />
+          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]}  powerOn ={powerOn}  volume={volume} />
+          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]}   powerOn ={powerOn} volume={volume} />
           
         </div>
   )
@@ -88,39 +89,43 @@ function DrumMachine({heaterKit, sounds, setContent, volume}){
 }
 
 
-function DisplayBox({heaterKit, setHeaterKit, content,  setContent, contentVersion, volume , setVolume}){
+function DisplayBox({heaterKit, setHeaterKit, content,  setContent, contentVersion, volume , setVolume, powerOn, setPowerOn}){
   
   const [volumeChanged, setVolumeChanged] = useState(false)
   
-  const timeoutRef = useRef(null);
+  
 
   return(
 
     <div id="displayBox" className="displayBox d-flex gap-3 flex-column align-items-center">
-          <Power />
-          <Display content ={content} setContent= {setContent} contentVersion = {contentVersion} setVolumeChanged = {setVolumeChanged} volumeChanged= {volumeChanged} volume ={volume}/>
-          <Volume  volume ={volume} setVolume = {setVolume} setVolumeChanged = {setVolumeChanged} timeoutRef= {timeoutRef} content = {content}  />
-          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} setContent={setContent}/>
+          <Power powerOn = {powerOn} setPowerOn = {setPowerOn} />
+          <Display content ={content} setContent= {setContent} contentVersion = {contentVersion} setVolumeChanged = {setVolumeChanged} volumeChanged= {volumeChanged} volume ={volume} powerOn = {powerOn}/>
+          <Volume  volume ={volume} setVolume = {setVolume} setVolumeChanged = {setVolumeChanged} content = {content} powerOn = {powerOn}  />
+          <Bank heaterKit = {heaterKit} setHeaterKit={setHeaterKit} setContent={setContent} powerOn = {powerOn}/>
           
         </div>
   )
 }
 
 
-function Power(){
+function Power({powerOn, setPowerOn}){
+
+  const togglePower = () => {
+    setPowerOn(!powerOn)
+  }
 
   return(
     <div className="power">
           <p className="text-center fw-black fs-6 mb-0">Power</p>
           <div className="power-switcher">
-            <button className="float-start cursor-pointer w-45 h-100 bg-primary"></button>
+            <button className={`${powerOn ? "float-end" : "float-start"} cursor-pointer w-45 h-100 bg-primary`} onClick={togglePower}></button>
           </div>
 
     </div>
   )
 }
 
-function Display({content, contentVersion,  volume, volumeChanged, setVolumeChanged}){
+function Display({content, contentVersion, volume, volumeChanged, setVolumeChanged, powerOn}){
   
   
  const timeoutRef = useRef(null)
@@ -151,13 +156,13 @@ function Display({content, contentVersion,  volume, volumeChanged, setVolumeChan
 
   return(
     <div className={"display text-center align-content-center fw-black"}>
-          {volumeChanged ? `volume = ${volume}%` : content }
+          {powerOn ? (volumeChanged ? `volume = ${volume}%` : content) : "" }
           </div>
   )
 
 }
 
-function Volume({setVolume, setVolumeChanged}){
+function Volume({setVolume, setVolumeChanged, powerOn}){
 
   
 
@@ -175,12 +180,12 @@ function Volume({setVolume, setVolumeChanged}){
    
   
   return (
-    <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" onChange={()=> adjustVolume(event)} />
+    <input type="range" className="form-range" id="customRange" min="0" max="100" step="1" onChange={ () => adjustVolume(event)} disabled={powerOn ? false : true} />
   )
 }
 
 
-function Bank({heaterKit, setHeaterKit, setContent}){
+function Bank({heaterKit, setHeaterKit, setContent, powerOn}){
    
   
 
@@ -195,7 +200,7 @@ function Bank({heaterKit, setHeaterKit, setContent}){
 
     <p className="text-center fw-black fs-6 mb-0">Bank</p>
     <div className="bank-switcher">
-      <button className={` ${heaterKit ? "float-start" : "float-end"} cursor-pointer w-45 h-100 bg-primary`} onClick={toggleHeaterKit}></button>
+      <button className={` ${heaterKit ? "float-start" : "float-end"} cursor-pointer w-45 h-100 bg-primary`} onClick={toggleHeaterKit} disabled={powerOn ? false : true}></button>
     </div>
 
     </div>
@@ -205,7 +210,7 @@ function Bank({heaterKit, setHeaterKit, setContent}){
 }
 
 
-function Drumpad({sound,letter, setContent, name, volume}){
+function Drumpad({sound,letter, setContent, name, volume, powerOn}){
   
   const audioRef = useRef(null);
 
@@ -222,7 +227,7 @@ function Drumpad({sound,letter, setContent, name, volume}){
 
   return (
     <>
-    <button id={letter} className="drum-pad" onClick={playSound} value={letter}>{letter}</button>
+    <button id={letter} className="drum-pad" onClick={powerOn ? playSound : "" } value={letter} disabled={powerOn ? false : true}>{letter}</button>
     <audio ref={audioRef} id ={`audio-${letter}`}  src={sound}></audio>
     </>
   )
