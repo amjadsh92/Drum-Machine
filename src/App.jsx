@@ -17,13 +17,31 @@ function App() {
   const [contentVersion, setContentVersion] = useState(0)
   const [volume, setVolume] = useState(50)
   const [powerOn, setPowerOn] = useState(true)
+  const [keyPressed, setKeyPressed] = useState("")
 
 
   const changeContent =(value) => {
         setDisplayContent(value)
         setContentVersion((prev) => prev + 1)
+
+
   }
 
+  useEffect(() => {
+    divRef.current?.focus();
+  }, []);
+
+  const divRef = useRef(null);
+
+  const keys = "QWEASDZXC".split("")
+
+  const handleKeyPress = (event) => {
+    const key = event.key.toUpperCase();
+    if (powerOn && keys.includes(key)) {
+      setKeyPressed(key);
+    }
+  };
+  
   const sounds1 = {
     heater1: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-1.mp3",
     heater2: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/Heater-2.mp3",
@@ -52,10 +70,10 @@ function App() {
   const sounds ={sounds1, sounds2}
   
   return (
-    <div className="p-1px bg-secondary vh-100 align-content-center">
+    <div ref ={divRef} className="p-1px bg-secondary vh-100 align-content-center" tabIndex="0" onKeyDown={handleKeyPress}>
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
           
-        <DrumMachine powerOn = {powerOn} heaterKit = {heaterKit} sounds={sounds} setContent = {changeContent} volume = {volume} />
+        <DrumMachine powerOn = {powerOn} heaterKit = {heaterKit} sounds={sounds} setContent = {changeContent} volume = {volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed} />
         <DisplayBox heaterKit={heaterKit} setHeaterKit ={setHeaterKit} powerOn = {powerOn} setPowerOn = {setPowerOn} contentVersion = {contentVersion} content={displayContent} setContent={changeContent} setVolume={setVolume} volume = {volume} />
       </div>
       
@@ -64,7 +82,7 @@ function App() {
 }
 
 
-function DrumMachine({heaterKit, sounds, setContent, volume, powerOn}){
+function DrumMachine({heaterKit, sounds, setContent, volume, keyPressed, setKeyPressed, powerOn}){
 
   const { heater1, heater2, heater3, heater4, clap, openHH, kicknHat, kick, closedHH } = sounds.sounds1;
   const { chord1, chord2, chord3, shaker, punchyKick, sideStick, snare } = sounds.sounds2;
@@ -73,15 +91,15 @@ function DrumMachine({heaterKit, sounds, setContent, volume, powerOn}){
   return(
 
     <div id="drum-machine" className="drum-machine">
-          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0] }  powerOn ={powerOn} volume={volume} />
-          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]}   powerOn ={powerOn} volume={volume} />
-          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]}   powerOn ={powerOn} volume={volume}/>
-          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]}   powerOn ={powerOn} volume={volume} />
-          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]}   powerOn ={powerOn} volume={volume} />
-          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]}  powerOn ={powerOn} volume={volume} />
-          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]}  powerOn ={powerOn}  volume={volume} />
-          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]}  powerOn ={powerOn}  volume={volume} />
-          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]}   powerOn ={powerOn} volume={volume} />
+          <Drumpad sound = {heaterKit ? heater1 : chord1} letter = "Q" setContent ={setContent} name = {heaterKit ? namesOfSounds1[0] : namesOfSounds2[0] }  powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed} />
+          <Drumpad sound = {heaterKit ? heater2 : chord2} letter = "W" setContent ={setContent} name = {heaterKit ? namesOfSounds1[1] : namesOfSounds2[1]}   powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? heater3 : chord3} letter = "E" setContent ={setContent} name = {heaterKit ? namesOfSounds1[2] : namesOfSounds2[2]}   powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? heater4 : shaker} letter = "A" setContent ={setContent} name = {heaterKit ? namesOfSounds1[3] : namesOfSounds2[3]}   powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? clap : openHH} letter = "S" setContent ={setContent}    name = {heaterKit ? namesOfSounds1[4] : namesOfSounds2[4]}   powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? openHH : closedHH} letter = "D" setContent ={setContent} name = {heaterKit ? namesOfSounds1[5] : namesOfSounds2[5]}  powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? kicknHat : punchyKick} letter = "Z" setContent ={setContent} name = {heaterKit ? namesOfSounds1[6] : namesOfSounds2[6]}  powerOn ={powerOn}  volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? kick : sideStick} letter = "X" setContent ={setContent} name = {heaterKit ? namesOfSounds1[7] : namesOfSounds2[7]}  powerOn ={powerOn}  volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
+          <Drumpad sound = {heaterKit ? closedHH : snare} letter = "C" setContent ={setContent} name = {heaterKit ? namesOfSounds1[8] : namesOfSounds2[8]}   powerOn ={powerOn} volume={volume} keyPressed = {keyPressed} setKeyPressed = {setKeyPressed}/>
           
         </div>
   )
@@ -117,7 +135,7 @@ function Power({powerOn, setPowerOn}){
   return(
     <div className="power">
           <p className="text-center fw-black fs-6 mb-0">Power</p>
-          <div className="power-switcher">
+          <div className="power-switcher" onClick={togglePower}>
             <button className={`${powerOn ? "float-end" : "float-start"} cursor-pointer w-45 h-100 bg-primary`} onClick={togglePower}></button>
           </div>
 
@@ -199,8 +217,8 @@ function Bank({heaterKit, setHeaterKit, setContent, powerOn}){
     <div className="bank">
 
     <p className="text-center fw-black fs-6 mb-0">Bank</p>
-    <div className="bank-switcher">
-      <button className={` ${heaterKit ? "float-start" : "float-end"} cursor-pointer w-45 h-100 bg-primary`} onClick={toggleHeaterKit} disabled={powerOn ? false : true}></button>
+    <div className="bank-switcher"  onClick={powerOn ? toggleHeaterKit : ""} >
+      <button className={` ${heaterKit ? "float-start" : "float-end"} cursor-pointer w-45 h-100 bg-primary`} onClick={toggleHeaterKit} disabled={powerOn ? false : true} ></button>
     </div>
 
     </div>
@@ -210,19 +228,28 @@ function Bank({heaterKit, setHeaterKit, setContent, powerOn}){
 }
 
 
-function Drumpad({sound,letter, setContent, name, volume, powerOn}){
-  
+function Drumpad({sound,letter, setContent, name, volume, keyPressed , setKeyPressed, powerOn}){
+  debugger;
   const audioRef = useRef(null);
 
   const playSound = () => {
       
-     setContent(name)
-    if (audioRef.current) {
-      audioRef.current.volume = volume / 100;
-      audioRef.current.currentTime = 0; 
-      audioRef.current.play();
-    }
-  };
+    setContent(name)
+   if (audioRef.current) {
+     audioRef.current.volume = volume / 100;
+     audioRef.current.currentTime = 0; 
+     audioRef.current.play();
+   }
+ };
+  
+
+  if (keyPressed === letter){
+
+    playSound()
+    setKeyPressed("")
+  }
+
+  
 
 
   return (
