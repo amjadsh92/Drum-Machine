@@ -229,12 +229,15 @@ function Bank({heaterKit, setHeaterKit, setContent, powerOn}){
 
 
 function Drumpad({sound,letter, setContent, name, volume, keyPressed , setKeyPressed, powerOn}){
-  debugger;
+  
+  const [isClicked, setIsClicked] = useState(false)
   const audioRef = useRef(null);
 
   const playSound = () => {
-      
-    setContent(name)
+   
+   setIsClicked(true) 
+   setTimeout(() => setIsClicked(false), 100) 
+   setContent(name)
    if (audioRef.current) {
      audioRef.current.volume = volume / 100;
      audioRef.current.currentTime = 0; 
@@ -243,18 +246,20 @@ function Drumpad({sound,letter, setContent, name, volume, keyPressed , setKeyPre
  };
   
 
-  if (keyPressed === letter){
-
-    playSound()
-    setKeyPressed("")
-  }
+  
 
   
+  useEffect(() => {
+    if (keyPressed === letter) {
+      playSound();
+      setKeyPressed(""); 
+    }
+  }); 
 
 
   return (
     <>
-    <button id={letter} className="drum-pad" onClick={powerOn ? playSound : "" } value={letter} disabled={powerOn ? false : true}>{letter}</button>
+    <button id={letter} className={`${isClicked ? "drum-pad-clicked" : "drum-pad"}`} onClick={powerOn ? playSound : "" } value={letter} disabled={powerOn ? false : true}>{letter}</button>
     <audio ref={audioRef} id ={`audio-${letter}`}  src={sound}></audio>
     </>
   )

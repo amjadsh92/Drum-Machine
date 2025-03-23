@@ -23,6 +23,24 @@
     
   }
 
+  .drum-pad-clicked{
+    background-color: rgb(128, 128, 128); 
+    color: black;
+    height: 75px;
+    width:100px; 
+    font-size: 20px;
+    border-radius: 5px;
+    text-align:center;
+    align-content: center;
+    font-weight: 900;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+    border:none;
+    margin-left:5px;
+    margin-top:5px;
+   
+    
+  }  
+
 .displayBox{
     width:200px;
 }  
