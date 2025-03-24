@@ -14,7 +14,7 @@ function App() {
   const [volume, setVolume] = useState(50);
   const [powerOn, setPowerOn] = useState(true);
   const [keyPressed, setKeyPressed] = useState("");
-  const [keyRepeated, setKeyRepeated] = useState(false)
+  
 
   const changeContent = (value) => {
     setDisplayContent(value);
@@ -32,13 +32,7 @@ function App() {
   const handleKeyPress = (event) => {
    
     
-    if (event.repeat) {
-       setKeyRepeated(true)
-    }
-    else{
-      setKeyRepeated(false)
-    }
-  
+   
     const key = event.key.toUpperCase();
     if (powerOn && keys.includes(key)) {
       setKeyPressed(key);
@@ -94,7 +88,7 @@ function App() {
           volume={volume}
           keyPressed={keyPressed}
           setKeyPressed={setKeyPressed}
-          keyRepeated ={keyRepeated}
+          
         />
         <DisplayBox
           heaterKit={heaterKit}
@@ -163,7 +157,7 @@ function DrumMachine({
           volume={volume}
           keyPressed={keyPressed}
           setKeyPressed={setKeyPressed}
-          keyRepeated = {keyRepeated}
+          
         />
       ))}
     </div>
@@ -313,18 +307,14 @@ function Drumpad({
   volume,
   keyPressed,
   setKeyPressed,
-  powerOn,
-  keyRepeated
+  powerOn
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const audioRef = useRef(null);
   debugger;
   const playSound = () => {
     setIsClicked(true);
-    if(keyRepeated){
-      setIsClicked(false)
-      return
-    }
+   
      setTimeout(() => setIsClicked(false), 100);
     
     setContent(name);
