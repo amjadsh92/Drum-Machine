@@ -1,3 +1,4 @@
+git push -u origin new-branch-name
 /* eslint-disable */
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -14,7 +15,9 @@ function App() {
   const [volume, setVolume] = useState(50);
   const [powerOn, setPowerOn] = useState(true);
   const [keyPressed, setKeyPressed] = useState("");
+  const [keyUp, setKeyUp] = useState(true)
   const [keyRepeated, setKeyRepeated] = useState(false)
+  const [clickedPads, setClickedPads] = useState({}); // Track clicked pads
 
   const changeContent = (value) => {
     setDisplayContent(value);
@@ -38,12 +41,26 @@ function App() {
     else{
       setKeyRepeated(false)
     }
+
+    
   
     const key = event.key.toUpperCase();
     if (powerOn && keys.includes(key)) {
       setKeyPressed(key);
+      setKeyUp(false)
+      setClickedPads((prev) => ({ ...prev, [key]: true })); // Mark pad as clicked
     }
   };
+
+  const handleKeyUp = (event) =>{
+
+    const key = event.key.toUpperCase();
+    if (powerOn && key === keyPressed) {
+      setKeyUp(true);
+      setClickedPads((prev) => ({ ...prev, [key]: false })); // Mark pad as unclicked
+    }
+
+  }
 
   const sounds1 = {
     heater1:
@@ -84,6 +101,7 @@ function App() {
       className="p-1px bg-secondary vh-100 align-content-center"
       tabIndex="0"
       onKeyDown={handleKeyPress}
+      onKeyUp = {handleKeyUp}
     >
       <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
         <DrumMachine
@@ -92,6 +110,8 @@ function App() {
           sounds={sounds}
           setContent={changeContent}
           volume={volume}
+          setKeyUp = {setKeyUp}
+          keyUp = {keyUp}
           keyPressed={keyPressed}
           setKeyPressed={setKeyPressed}
           keyRepeated ={keyRepeated}
@@ -117,6 +137,8 @@ function DrumMachine({
   sounds,
   setContent,
   volume,
+  keyUp,
+  setKeyUp,
   keyPressed,
   setKeyPressed,
   powerOn,
@@ -161,6 +183,8 @@ function DrumMachine({
           name={heaterKit ? namesOfSounds1[index] : namesOfSounds2[index]}
           powerOn={powerOn}
           volume={volume}
+          keyUp = {keyUp}
+          setKeyUp = {setKeyUp}
           keyPressed={keyPressed}
           setKeyPressed={setKeyPressed}
           keyRepeated = {keyRepeated}
@@ -311,6 +335,8 @@ function Drumpad({
   setContent,
   name,
   volume,
+  keyUp,
+  setKeyUp,
   keyPressed,
   setKeyPressed,
   powerOn,
@@ -322,10 +348,9 @@ function Drumpad({
   const playSound = () => {
     setIsClicked(true);
     if(keyRepeated){
-      setIsClicked(false)
+      
       return
     }
-     setTimeout(() => setIsClicked(false), 100);
     
     setContent(name);
     if (audioRef.current) {
@@ -339,9 +364,14 @@ function Drumpad({
   useEffect(() => {
     if (keyPressed === letter) {
       playSound();
-      setKeyPressed("");
+      if (keyUp){
+        setIsClicked(false);
+        setKeyPressed("")
+      };
     }
   });
+
+  
 
   return (
     <>
