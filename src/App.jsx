@@ -75,11 +75,11 @@ function App() {
   return (
     <div
       ref={divRef}
-      className="p-1px bg-secondary vh-100 align-content-center"
+      className="p-1px overflow-auto bg-secondary vh-100 align-content-center"
       tabIndex="0"
       onKeyDown={handleKeyPress}
     >
-      <div className="drum-app d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
+      <div className="drum-app mt-5 mb-5 d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
         <DrumMachine
           powerOn={powerOn}
           heaterKit={heaterKit}
