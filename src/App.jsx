@@ -79,7 +79,7 @@ function App() {
       tabIndex="0"
       onKeyDown={handleKeyPress}
     >
-      <div className="d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
+      <div className="drum-app d-flex gap-5 w-650px h-320px mx-auto border border-4 border-warning align-items-center bg-custom-gray">
         <DrumMachine
           powerOn={powerOn}
           heaterKit={heaterKit}
@@ -88,8 +88,7 @@ function App() {
           volume={volume}
           keyPressed={keyPressed}
           setKeyPressed={setKeyPressed}
-          
-        />
+          />
         <DisplayBox
           heaterKit={heaterKit}
           setHeaterKit={setHeaterKit}
@@ -114,7 +113,7 @@ function DrumMachine({
   keyPressed,
   setKeyPressed,
   powerOn,
-  keyRepeated
+
 }) {
   const {
     heater1,
@@ -311,7 +310,7 @@ function Drumpad({
 }) {
   const [isClicked, setIsClicked] = useState(false);
   const audioRef = useRef(null);
-  debugger;
+  
   const playSound = () => {
     setIsClicked(true);
    

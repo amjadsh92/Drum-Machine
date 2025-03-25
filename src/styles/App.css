@@ -113,3 +113,119 @@
     box-shadow: none !important;
     outline: none !important;
 }
+
+
+@media (max-width: 660px){
+
+    .drum-app{
+        flex-direction: column; 
+        width:70% !important; 
+        height:fit-content !important; 
+        justify-content: center;
+    }
+
+    .drum-machine{
+        margin-left: 0px;
+        margin-top:30px;
+
+    }
+
+    .drum-pad{
+
+        background-color: rgb(128, 128, 128); 
+        color: black;
+        height: 70px;
+        width:80px; 
+        font-size: 18px;
+        border-radius: 5px;
+        text-align:center;
+        align-content: center;
+        font-weight: 900;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+        border:none;
+    
+
+    }
+  
+    .drum-pad-clicked{
+
+        background-color: rgb(128, 128, 128); 
+        color: black;
+        height: 65px;
+        width:75px; 
+        font-size: 18px;
+        border-radius: 5px;
+        text-align:center;
+        align-content: center;
+        font-weight: 900;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+        border:none;
+        margin-left:5px;
+        margin-top:5px;
+
+    }
+
+    .displayBox{
+        margin-bottom:30px;
+    }
+    
+
+    
+}
+
+
+@media (max-width: 450px){
+
+
+
+    .drum-pad{
+
+        background-color: rgb(128, 128, 128); 
+        color: black;
+        height: 65px;
+        width:75px; 
+        font-size: 15px;
+        border-radius: 5px;
+        text-align:center;
+        align-content: center;
+        font-weight: 900;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+        border:none;
+    
+
+    }
+  
+    .drum-pad-clicked{
+
+        background-color: rgb(128, 128, 128); 
+        color: black;
+        height: 60px;
+        width:70px; 
+        font-size: 15px;
+        border-radius: 5px;
+        text-align:center;
+        align-content: center;
+        font-weight: 900;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+        border:none;
+        margin-left:5px;
+        margin-top:5px;
+
+    }
+      
+    /* .power-switcher{
+        width: 35px !important;
+        height: 19px !important;
+    }
+
+    .power-switcher > button{
+        width:50% !important;
+    } */
+
+    .drum-app{
+        width:90% !important;
+
+    }
+
+
+}
